@@ -1,0 +1,41 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Claude Meter Reader Setup",
+        "description": "Configure Claude API for meter reading",
+        "data": {
+          "api_key": "Claude API Key",
+          "camera_entity": "Camera Entity",
+          "led_entity": "LED Entity (optional)",
+          "led_delay": "LED Delay (seconds)",
+          "scan_interval": "Scan Interval (seconds)",
+          "claude_prompt": "Claude Prompt"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect",
+      "invalid_auth": "Invalid API key format",
+      "invalid_camera": "Camera entity not found",
+      "invalid_led": "LED entity not found",
+      "unknown": "Unexpected error occurred"
+    },
+    "abort": {
+      "already_configured": "Device is already configured"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Claude Meter Reader Options",
+        "data": {
+          "led_entity": "LED Entity",
+          "led_delay": "LED Delay (seconds)",
+          "scan_interval": "Scan Interval (seconds)",
+          "claude_prompt": "Claude Prompt"
+        }
+      }
+    }
+  }
+}
