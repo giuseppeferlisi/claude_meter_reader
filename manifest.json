@@ -1,12 +1,14 @@
 {
   "domain": "claude_meter_reader",
   "name": "Claude Meter Reader",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "config_flow": true,
+  "documentation": "https://github.com/giuseppeferlisi/claude_meter_reader",
+  "issue_tracker": "https://github.com/giuseppeferlisi/claude_meter_reader/issues",
   "dependencies": [],
   "requirements": [],
-  "codeowners": [],
+  "codeowners": ["@giuseppeferlisi"],
   "integration_type": "device",
   "iot_class": "cloud_polling",
-  "icon": "mdi:water-pump"
+  "icon": "mdi:gauge-full"
 }
