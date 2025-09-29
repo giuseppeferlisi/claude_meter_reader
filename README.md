@@ -6,4 +6,12 @@ This Home assistant custom integration "claude_meter_reader" (domain: claude_met
 - Restart HA
 - Add the integration an configure the parameters
 
-- The code will try to use the latest LLM model from claude if you have a valid pir2 account. If not he will use the pir1 LLM model (low cost $0.24$ per Month). 
+- The code will try to use the latest LLM model from claude if you have a valid pir2 account. If not he will use the pir1 LLM model (low cost $0.24$ per Month).
+
+HA Dashboard
+  <img width="499" height="346" alt="image" src="https://github.com/user-attachments/assets/c10af065-e2c6-4942-b934-ab508877b57f" />
+
+Zähler
+  <img width="500" height="531" alt="image" src="https://github.com/user-attachments/assets/ab05efd5-5485-498d-997f-90fe37614073" />
+
+
