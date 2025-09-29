@@ -16,6 +16,7 @@ from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from homeassistant.util import dt as dt_util
+from datetime import datetime
 
 from .const import (
     DOMAIN,
@@ -82,6 +83,10 @@ class ClaudeMeterReaderCoordinator(DataUpdateCoordinator):
             # Call Claude API
             meter_value = await self._call_claude_api(image_b64)
             
+            # Turn off LED after delay (non-blocking)
+            if self.led_entity and self.led_entity != "":
+                self.hass.loop.create_task(self._turn_off_led_after_delay())
+            
             if meter_value is None:
                 raise UpdateFailed("Failed to read meter value from Claude")
             
@@ -93,16 +98,15 @@ class ClaudeMeterReaderCoordinator(DataUpdateCoordinator):
             
         except Exception as err:
             _LOGGER.error("Error reading meter: %s", err)
+            # Turn off LED immediately on error
+            if self.led_entity and self.led_entity != "":
+                self.hass.loop.create_task(self._turn_off_led_immediately())
             return {
                 "value": None,
                 "status": "error",
                 "error": str(err),
                 "last_reading": dt_util.now().isoformat(),
             }
-        finally:
-            # Turn off LED after delay if configured
-            if self.led_entity and self.led_entity != "":
-                await self._turn_off_led_after_delay()
 
     async def _turn_on_led(self) -> None:
         """Turn on the LED."""
@@ -122,8 +126,22 @@ class ClaudeMeterReaderCoordinator(DataUpdateCoordinator):
                 "light", "turn_off", {"entity_id": self.led_entity}
             )
             _LOGGER.debug("Turned off LED: %s after %s seconds", self.led_entity, self.led_delay)
+        except asyncio.CancelledError:
+            # Task was cancelled, turn off LED immediately
+            _LOGGER.debug("LED turn-off task cancelled, turning off immediately")
+            await self._turn_off_led_immediately()
         except Exception as err:
             _LOGGER.warning("Failed to turn off LED %s: %s", self.led_entity, err)
+
+    async def _turn_off_led_immediately(self) -> None:
+        """Turn off the LED immediately without delay."""
+        try:
+            await self.hass.services.async_call(
+                "light", "turn_off", {"entity_id": self.led_entity}
+            )
+            _LOGGER.debug("Turned off LED immediately: %s", self.led_entity)
+        except Exception as err:
+            _LOGGER.warning("Failed to turn off LED immediately %s: %s", self.led_entity, err)
 
     async def _get_camera_image(self) -> bytes | None:
         """Get image from camera entity."""
@@ -142,9 +160,9 @@ class ClaudeMeterReaderCoordinator(DataUpdateCoordinator):
     async def _call_claude_api(self, image_b64: str) -> float | None:
         """Call Claude API to read meter value with model fallback."""
         models_to_try = [
-            "claude-3-5-sonnet-20241022",
-            "claude-3-5-sonnet-20240620", 
-            "claude-3-haiku-20240307",
+            "claude-3-haiku-20240307",          # Schnell & günstig - funktioniert!
+            "claude-3-5-sonnet-20241022",       # Fallback
+            "claude-3-5-sonnet-20240620",       # Fallback
         ]
         
         session = async_get_clientsession(self.hass)
