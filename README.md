@@ -18,6 +18,7 @@ This Home assistant custom integration "claude_meter_reader" (domain: claude_met
 
 HA Dashboard: <img width="499" height="346" alt="image" src="https://github.com/user-attachments/assets/c10af065-e2c6-4942-b934-ab508877b57f" />
 
-Zähler: <img width="500" height="531" alt="image" src="https://github.com/user-attachments/assets/ab05efd5-5485-498d-997f-90fe37614073" />
+My Water Meter: <img width="791" height="551" alt="image" src="https://github.com/user-attachments/assets/fb0f15a2-d6ad-4f56-82a5-935c3fa71c22" />
+
 
 
