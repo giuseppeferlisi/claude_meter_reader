@@ -1,0 +1,10 @@
+type: entities
+title: Wasserzähler
+entities:
+  - entity: sensor.claude_wasserzahler
+    name: Aktueller Stand
+  - entity: sensor.claude_wasserzahler_letzte_ablesung
+    name: Letzte Ablesung
+  - entity: button.zahler_jetzt_ablesen
+    name: Jetzt ablesen
+  - entity: sensor.claude_wasserzahler_status
